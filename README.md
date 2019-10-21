@@ -41,6 +41,8 @@ Run the application
 F5
 ```
 
+Go to https://localhost:44381/
+
 ## Solution
 
 The Solution include five projects: 
