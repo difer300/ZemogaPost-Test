@@ -1,0 +1,71 @@
+﻿@model Zemoga.Models.Post
+
+@{
+    ViewBag.Title = "Details Post";
+}
+
+<h2>Details</h2>
+
+<p>
+    @Html.ActionLink("Comments", "Index", "Comment", new { postId = Model.Id }, null)
+</p>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Created At")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Author Name")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorName)
+        </dd>
+
+        @if (Model.Status == Zemoga.Models.PostStatus.Published)
+        {
+            <dt>
+                @Html.DisplayName("Approved At")
+            </dt>
+
+            <dd>
+                @ViewBag.ApprovedAt
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Approved By")
+            </dt>
+
+            <dd>
+                @ViewBag.ApprovedBy
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,26 @@
+﻿@using Zemoga.Models
+@model ICollection<User>
+
+<div>
+    <h2>Login</h2>
+</div>
+
+@using (Html.BeginForm("LoginAsync", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="body-content">
+        <div class="form-horizontal">
+            <hr />
+            <div class="form-group">
+                <div class="text-left">
+                    @Html.Label("Select User", htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="dropdown dropleft">
+                    @Html.DropDownList("Users", new SelectList(Model, "Id", "Name"), htmlAttributes: new { @class = "control-dropdown" })
+                </div>
+                <div>
+                    <input type="submit" value="Login" class="btn btn-wide btn-success" />
+                </div>
+            </div>
+        </div>
+    </div>
+}

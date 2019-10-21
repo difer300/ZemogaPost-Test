@@ -1,0 +1,126 @@
+﻿@using Zemoga.Models
+@model ICollection<Post>
+
+@{
+    var currentUser = ViewBag.CurrentUser;
+}
+
+<h2>Posts</h2>
+
+@if (currentUser != null && ((User)currentUser).Role == UserRole.Writer)
+{
+    <p>
+        @Html.ActionLink("Create Post", "Create")
+    </p>
+}
+
+<table class="table" id="post-table">
+    <thead>
+        <tr>
+            <th class="hide">
+                Id
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                AuthorName
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                State
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in Model)
+        {
+            <tr>
+                <td id="postId" class="hide">@post.Id</td>
+                <td>@post.Title</td>
+                <td>@post.AuthorName</td>
+                <td>@post.CreatedAt</td>
+                <td>@post.Status</td>
+                @if (currentUser != null && ((User)currentUser).Role == UserRole.Writer && post.Status != PostStatus.Published)
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = post.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = post.Id }) |
+                        <a class="publish">Publish</a>
+                    </td>
+                }
+                else if (currentUser != null && ((User)currentUser).Role == UserRole.Editor && post.Status != PostStatus.Published)
+                {
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = post.Id }) |
+                        <a class="approve">Approve</a> |
+                        <a class="reject">Reject</a>
+                    </td>
+                }
+                else
+                {
+                    <td>@Html.ActionLink("Details", "Details", new { id = post.Id })</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@section scripts {
+    <script type="text/javascript">
+        $('.publish').click(function () {
+            var row = $(this).parents('tr').first();
+            var idPost = row.find("td:first").text();
+            $.ajax({
+                url: '/post/publish',
+                type: 'POST',
+                data: {
+                    id: idPost
+                },
+                success: function (resp) {
+                    window.location.reload(true);
+                },
+                error: function (err) { console.error(err) }
+            });
+        });
+
+        $('.approve').click(function () {
+            var row = $(this).parents('tr').first();
+            var idPost = row.find("td:first").text();
+            $.ajax({
+                url: '/post/approve',
+                type: 'POST',
+                data: {
+                    id: idPost
+                },
+                success: function (resp) {
+                    window.location.reload(true);
+                },
+                error: function (err) { console.error(err) }
+            });
+        });
+
+        $('.reject').click(function () {
+            var row = $(this).parents('tr').first();
+            var idPost = row.find("td:first").text();
+            $.ajax({
+                url: '/post/reject',
+                type: 'POST',
+                data: {
+                    id: idPost
+                },
+                success: function (resp) {
+                    window.location.reload(true);
+                },
+                error: function (err) { console.error(err) }
+            });
+        });
+    </script>
+}
