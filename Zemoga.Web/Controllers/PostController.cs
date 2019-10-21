@@ -93,7 +93,6 @@ namespace Zemoga.Web.Controllers
             return Redirect("/Post");
         }
 
-        [HttpPost]
         public async Task<ActionResult> Delete(long id)
         {
             var currentUser = Session["CurrentUser"];

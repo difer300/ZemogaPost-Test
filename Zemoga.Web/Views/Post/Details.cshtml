@@ -7,7 +7,10 @@
 <h2>Details</h2>
 
 <p>
-    @Html.ActionLink("Comments", "Index", "Comment", new { postId = Model.Id }, null)
+    @if (Model.Status == Zemoga.Models.PostStatus.Published)
+    {
+        @Html.ActionLink("Comments", "Index", "Comment", new { postId = Model.Id }, null)
+    }
 </p>
 
 <div>
