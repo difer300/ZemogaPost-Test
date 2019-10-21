@@ -1,9 +1,8 @@
 namespace Zemoga.Service.Data.Migrations
 {
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
+    using Zemoga.Models;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Zemoga.Service.Data.Data.CoreDataContext>
     {
@@ -14,10 +13,10 @@ namespace Zemoga.Service.Data.Migrations
 
         protected override void Seed(Zemoga.Service.Data.Data.CoreDataContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            context.Users.AddOrUpdate(x => x.Id,
+                new User() { Id = 1, Name = "Jane Austen - Writer", Role = UserRole.Writer, CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+                new User() { Id = 2, Name = "Charles Dickens - Editor", Role = UserRole.Editor, CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
+            );
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Zemoga.Service.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201910210037330_InitialCreate"; }
+            get { return "201910210510568_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source
