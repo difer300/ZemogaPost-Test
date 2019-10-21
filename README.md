@@ -29,7 +29,7 @@ View => Other Windows => Package Mannager Console
 In the Default project select "Zemoga.Service.Data"
 ```
 ```
-Execute the command "upda-database"
+Execute the command "update-database"
 ```
 Go to the solution "Zemoga". 
 ```
