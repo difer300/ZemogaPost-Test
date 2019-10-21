@@ -43,6 +43,15 @@ F5
 
 Go to https://localhost:44381/
 
+## Running the tests
+
+The run the unit test cases go to the project "Zemoga.Service.Test". 
+```
+right-click "Run unit tests"
+```
+
+The program automatically run all the unit test included and show the results in the Unit Tests window. 
+
 ## Solution
 
 The Solution include five projects: 
@@ -60,6 +69,9 @@ Inlcude the Web layer that containts the web application to show all the data.
 
 ### Zemoga.Web.Service
 Inlcude the layer to call the methos in the API. 
+
+### Zemoga.Service.Test
+Inlcude the unit test cases for the API. 
 
 ## ER Diagram
 ![alt text](https://github.com/difer300/ZemogaPost-Test/blob/master/Zemoga.Diagrams/E-R%20Diagram.JPG)
