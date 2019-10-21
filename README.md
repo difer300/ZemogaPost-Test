@@ -1,7 +1,7 @@
-# Senior .NET Developer Hands On Test - Employees Salaries
+# Zemoga Posts
 ## Task
 
-The objetive of this project is to challenge the coding abilities of the developer.
+Build a .Net web app that allows to create, edit and publish text-based blog posts, with a comments feature.
 
 ### Installing
 
