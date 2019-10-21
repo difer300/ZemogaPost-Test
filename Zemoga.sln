@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zemoga.Web.Service", "Zemog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zemoga.Web", "Zemoga.Web\Zemoga.Web.csproj", "{AE4ED232-4B65-4C16-89C3-60F040AC0B89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zemoga.Service.Test", "Zemoga.Service.Test\Zemoga.Service.Test.csproj", "{2256C95B-078E-47B3-9F0C-4D2DEAE6A9FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AE4ED232-4B65-4C16-89C3-60F040AC0B89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE4ED232-4B65-4C16-89C3-60F040AC0B89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE4ED232-4B65-4C16-89C3-60F040AC0B89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2256C95B-078E-47B3-9F0C-4D2DEAE6A9FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2256C95B-078E-47B3-9F0C-4D2DEAE6A9FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2256C95B-078E-47B3-9F0C-4D2DEAE6A9FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2256C95B-078E-47B3-9F0C-4D2DEAE6A9FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

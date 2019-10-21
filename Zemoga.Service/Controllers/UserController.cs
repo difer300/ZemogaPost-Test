@@ -10,25 +10,35 @@ namespace Zemoga.Service.Controllers
 {
     public class UserController : ApiController
     {
+
+        private readonly ICoreDataContext _db;
+
+        public UserController(ICoreDataContext dbContext)
+        {
+            _db = dbContext;
+        }
+
+        public UserController()
+        {
+            _db = new CoreDataContext();
+        }
+
         [HttpGet]
         [Route("api/User")]
         [ResponseType(typeof(ICollection<User>))]
         public IHttpActionResult Get()
         {
-            using (var db = new CoreDataContext())
+            var users = new List<User>();
+            try
             {
-                var users = new List<User>();
-                try
-                {
-                    users = db.Users.ToList();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(users);
+                users = _db.Users.ToList();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(users);
         }
 
         [HttpGet]
@@ -36,22 +46,19 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult Get(long id)
         {
-            using (var db = new CoreDataContext())
+            var user = new User();
+            try
             {
-                var user = new User();
-                try
-                {
-                    user = db.Users
-                        .Where(x => x.Id == id)
-                        .FirstOrDefault();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(user);
+                user = _db.Users
+                    .Where(x => x.Id == id)
+                    .FirstOrDefault();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(user);
         }
 
     }

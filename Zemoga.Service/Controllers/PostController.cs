@@ -10,27 +10,37 @@ namespace Zemoga.Service.Controllers
 {
     public class PostController : ApiController
     {
+
+        private readonly ICoreDataContext _db;
+
+        public PostController(ICoreDataContext dbContext)
+        {
+            _db = dbContext;
+        }
+
+        public PostController()
+        {
+            _db = new CoreDataContext();
+        }
+
         [HttpGet]
         [Route("api/Post/{id}")]
         [ResponseType(typeof(Post))]
         public IHttpActionResult GetById(long id)
         {
-            using (var db = new CoreDataContext())
+            var post = new Post();
+            try
             {
-                var post = new Post();
-                try
-                {
-                    post = db.Posts
-                        .Where(x => x.Id == id)
-                        .FirstOrDefault();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(post);
+                post = _db.Posts
+                    .Where(x => x.Id == id)
+                    .FirstOrDefault();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(post);
         }
 
         [HttpGet]
@@ -38,22 +48,19 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(ICollection<Post>))]
         public IHttpActionResult Get(long status)
         {
-            using (var db = new CoreDataContext())
+            var posts = new List<Post>();
+            try
             {
-                var posts = new List<Post>();
-                try
-                {
-                    posts = db.Posts
-                        .Where(x => x.Status == (PostStatus)status)
-                        .ToList();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(posts);
+                posts = _db.Posts
+                    .Where(x => x.Status == (PostStatus)status)
+                    .ToList();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(posts);
         }
 
         [HttpPost]
@@ -61,21 +68,18 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(Post))]
         public IHttpActionResult Create([FromBody]Post newPost)
         {
-            using (var db = new CoreDataContext())
+            try
             {
-                try
-                {
-                    newPost.Status = PostStatus.New;
-                    db.Posts.Add(newPost);
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(newPost);
+                newPost.Status = PostStatus.New;
+                _db.Posts.Add(newPost);
+                _db.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(newPost);
         }
 
         [HttpPut]
@@ -83,31 +87,28 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(BoolResponse))]
         public IHttpActionResult Update(Post update)
         {
-            using (var db = new CoreDataContext())
+            try
             {
-                try
-                {
-                    var post = db.Posts
-                        .Where(x => x.Id == update.Id)
-                        .FirstOrDefault();
+                var post = _db.Posts
+                    .Where(x => x.Id == update.Id)
+                    .FirstOrDefault();
 
-                    if (post != null)
-                    {
-                        post.Title = update.Title;
-                        post.Content = update.Content;
-                        post.AuthorName = update.AuthorName;
-                        post.ModifiedAt = DateTime.Now;
-                        db.SaveChanges();
-                    }
-
-                }
-                catch (Exception ex)
+                if (post != null)
                 {
-                    return BadRequest(ex.Message);
+                    post.Title = update.Title;
+                    post.Content = update.Content;
+                    post.AuthorName = update.AuthorName;
+                    post.ModifiedAt = DateTime.Now;
+                    _db.SaveChanges();
                 }
 
-                return Ok(new BoolResponse(true));
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(new BoolResponse(true));
         }
 
         [HttpDelete]
@@ -115,27 +116,24 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(BoolResponse))]
         public IHttpActionResult Delete(long postid)
         {
-            using (var db = new CoreDataContext())
+            try
             {
-                try
-                {
-                    var postStatusChange = db.PostStatusChanges
-                           .Where(x => x.Post.Id == postid)
-                           .ToList();
-                    db.PostStatusChanges.RemoveRange(postStatusChange);
-                    var post = db.Posts
-                        .Where(x => x.Id == postid)
-                        .FirstOrDefault();
-                    db.Posts.Remove(post);
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(new BoolResponse(true));
+                var postStatusChange = _db.PostStatusChanges
+                       .Where(x => x.Post.Id == postid)
+                       .ToList();
+                _db.PostStatusChanges.RemoveRange(postStatusChange);
+                var post = _db.Posts
+                    .Where(x => x.Id == postid)
+                    .FirstOrDefault();
+                _db.Posts.Remove(post);
+                _db.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(new BoolResponse(true));
         }
 
         [HttpPost]
@@ -143,34 +141,31 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(BoolResponse))]
         public IHttpActionResult Move(long postid, [FromBody]PostStatusChange postStatusChange)
         {
-            using (var db = new CoreDataContext())
+            try
             {
-                try
+                var post = _db.Posts
+                   .Where(x => x.Id == postid)
+                   .FirstOrDefault();
+                if (post != null)
                 {
-                    var post = db.Posts
-                       .Where(x => x.Id == postid)
+                    post.ModifiedAt = DateTime.Now;
+                    post.Status = (PostStatus)postStatusChange.Status;
+
+                    var user = _db.Users
+                       .Where(x => x.Id == postStatusChange.User.Id)
                        .FirstOrDefault();
-                    if (post != null)
-                    {
-                        post.ModifiedAt = DateTime.Now;
-                        post.Status = (PostStatus)postStatusChange.Status;
-
-                        var user = db.Users
-                           .Where(x => x.Id == postStatusChange.User.Id)
-                           .FirstOrDefault();
-                        postStatusChange.Post = post;
-                        postStatusChange.User = user;
-                        db.PostStatusChanges.Add(postStatusChange);
-                        db.SaveChanges();
-                    }
+                    postStatusChange.Post = post;
+                    postStatusChange.User = user;
+                    _db.PostStatusChanges.Add(postStatusChange);
+                    _db.SaveChanges();
                 }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(new BoolResponse(true));
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(new BoolResponse(true));
         }
 
         [HttpGet]
@@ -178,23 +173,20 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(ICollection<PostStatusChange>))]
         public IHttpActionResult GetStatesById(long id)
         {
-            using (var db = new CoreDataContext())
+            var postStatusChange = new List<PostStatusChange>();
+            try
             {
-                var postStatusChange = new List<PostStatusChange>();
-                try
-                {
-                    postStatusChange = db.PostStatusChanges
-                        .Include("User")
-                        .Where(x => x.Post.Id == id)
-                        .ToList();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(postStatusChange);
+                postStatusChange = _db.PostStatusChanges
+                    .Include("User")
+                    .Where(x => x.Post.Id == id)
+                    .ToList();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(postStatusChange);
         }
 
     }

@@ -10,27 +10,36 @@ namespace Zemoga.Service.Controllers
 {
     public class CommentController : ApiController
     {
+        private readonly ICoreDataContext _db;
+
+        public CommentController(ICoreDataContext dbContext)
+        {
+            _db = dbContext;
+        }
+
+        public CommentController()
+        {
+            _db = new CoreDataContext();
+        }
+
         [HttpGet]
         [Route("api/Comment/{postid}")]
         [ResponseType(typeof(ICollection<Comment>))]
         public IHttpActionResult Get(long postid)
         {
-            using (var db = new CoreDataContext())
+            var comments = new List<Comment>();
+            try
             {
-                var comments = new List<Comment>();
-                try
-                {
-                    comments = db.Comments
-                        .Where(x => x.Post.Id == postid)
-                        .ToList();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(comments);
+                comments = _db.Comments
+                    .Where(x => x.Post.Id == postid)
+                    .ToList();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(comments);
         }
 
         [HttpPost]
@@ -38,54 +47,48 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(Post))]
         public IHttpActionResult Create(long postid, [FromBody]Comment newComment)
         {
-            using (var db = new CoreDataContext())
+            try
             {
-                try
-                {
-                    var post = db.Posts
-                        .Where(x => x.Id == postid)
-                        .FirstOrDefault();
-                    newComment.Post = post;
-                    db.Comments.Add(newComment);
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(newComment);
+                var post = _db.Posts
+                    .Where(x => x.Id == postid)
+                    .FirstOrDefault();
+                newComment.Post = post;
+                _db.Comments.Add(newComment);
+                _db.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(newComment);
         }
 
         [HttpPut]
         [Route("api/Comment")]
         public IHttpActionResult Update(Comment update)
         {
-            using (var db = new CoreDataContext())
+            try
             {
-                try
-                {
-                    var comment = db.Comments
-                        .Where(x => x.Id == update.Id)
-                        .FirstOrDefault();
+                var comment = _db.Comments
+                    .Where(x => x.Id == update.Id)
+                    .FirstOrDefault();
 
-                    if (comment != null)
-                    {
-                        comment.Text = update.Text;
-                        comment.AuthorName = update.AuthorName;
-                        comment.ModifiedAt = DateTime.Now;
-                        db.SaveChanges();
-                    }
-
-                }
-                catch (Exception ex)
+                if (comment != null)
                 {
-                    return BadRequest(ex.Message);
+                    comment.Text = update.Text;
+                    comment.AuthorName = update.AuthorName;
+                    comment.ModifiedAt = DateTime.Now;
+                    _db.SaveChanges();
                 }
 
-                return Ok(true);
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(true);
         }
 
         [HttpDelete]
@@ -93,23 +96,20 @@ namespace Zemoga.Service.Controllers
         [ResponseType(typeof(bool))]
         public IHttpActionResult Delete(long commentid)
         {
-            using (var db = new CoreDataContext())
+            try
             {
-                try
-                {
-                    var comment = db.Comments
-                        .Where(x => x.Id == commentid)
-                        .FirstOrDefault();
-                    db.Comments.Remove(comment);
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                return Ok(true);
+                var comment = _db.Comments
+                    .Where(x => x.Id == commentid)
+                    .FirstOrDefault();
+                _db.Comments.Remove(comment);
+                _db.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(true);
         }
 
     }
