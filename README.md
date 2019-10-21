@@ -41,15 +41,6 @@ Run the application
 F5
 ```
 
-## Running the tests
-
-The run the unit test cases go to the project "MasGlobal.EmployeesSalaries.Tests". 
-```
-right-click "Run unit tests"
-```
-
-The program automatically run all the unit test included and show the results in the Unit Tests window. 
-
 ## Solution
 
 The Solution include five projects: 
@@ -71,10 +62,9 @@ Inlcude the layer to call the methos in the API.
 ## Built With
 
 * SDK: .Net Framework 4.6.1
-* [EntityFramework 6] (https://github.com/aspnet/EntityFramework6/wiki) 
-* [RestSharp] (http://restsharp.org/)
+* [EntityFramework 6](https://github.com/aspnet/EntityFramework6/wiki) 
+* [RestSharp](http://restsharp.org/)
 * [Newtonsoft](https://www.newtonsoft.com/json) - Json Converter
-* [AutoFixture.AutoMoq](https://www.nuget.org/packages/AutoFixture.AutoMoq/) - Used to create mocks
 
 ## Authors
 
