@@ -61,6 +61,9 @@ Inlcude the Web layer that containts the web application to show all the data.
 ### Zemoga.Web.Service
 Inlcude the layer to call the methos in the API. 
 
+## ER Diagram
+![alt text](https://github.com/difer300/ZemogaPost-Test/blob/master/Zemoga.Diagrams/E-R%20Diagram.JPG)
+
 ## Built With
 
 * SDK: .Net Framework 4.6.1
