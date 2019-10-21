@@ -47,7 +47,7 @@ Go to https://localhost:44381/
 
 The run the unit test cases go to the project "Zemoga.Service.Test". 
 ```
-right-click "Run unit tests"
+right-click "Run Tests"
 ```
 
 The program automatically run all the unit test included and show the results in the Unit Tests window. 
@@ -73,15 +73,23 @@ Inlcude the layer to call the methos in the API.
 ### Zemoga.Service.Test
 Inlcude the unit test cases for the API. 
 
+## Business Diagram
+![alt text](https://github.com/difer300/ZemogaPost-Test/blob/master/Zemoga.Diagrams/Business%20Diagram.JPG)
+
 ## ER Diagram
 ![alt text](https://github.com/difer300/ZemogaPost-Test/blob/master/Zemoga.Diagrams/E-R%20Diagram.JPG)
+
+## Components Diagram
+![alt text](https://github.com/difer300/ZemogaPost-Test/blob/master/Zemoga.Diagrams/Components%20Diagram.JPG)
 
 ## Built With
 
 * SDK: .Net Framework 4.6.1
 * [EntityFramework 6](https://github.com/aspnet/EntityFramework6/wiki) 
 * [RestSharp](http://restsharp.org/)
-* [Newtonsoft](https://www.newtonsoft.com/json) - Json Converter
+* [Newtonsoft](https://www.newtonsoft.com/json)
+* [AutoFixture](https://github.com/AutoFixture/AutoFixture)
+
 
 ## Authors
 
