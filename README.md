@@ -21,6 +21,10 @@ right-click and select the option "Restore NuGet Packages"
 ```
 right-click "Clean Solution" and then "Rebuild Solution"
 ```
+To restore the data base using migrations
+```
+right-click in the Zemoga.Service.Data project and select "Set as StartUp project"
+```
 Open the Package Manager Console and update the data base.
 ```
 View => Other Windows => Package Mannager Console
