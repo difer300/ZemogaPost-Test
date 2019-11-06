@@ -37,10 +37,12 @@ Execute the command "update-database"
 ```
 Go to the solution "Zemoga". 
 ```
-right-click and "Properties" and in the "Startup Project" select "multiple startup projects" and choose "Zemoga.Service" and "Zemoga.Web"
+right-click and "Properties" and in the "Startup Project" select "multiple startup projects" and choose "Zemoga.Service" and "Zemoga.Web" as Start projects
 ```
-
 Run the application
+```
+right-click "Clean Solution"
+```
 ```
 F5
 ```
